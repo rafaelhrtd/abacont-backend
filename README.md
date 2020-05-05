@@ -15,6 +15,21 @@ CompanyTaggings
       - can change privileges for leader
       - can transfer ownership
       - can delete company
+clients
+  - belongs_to company
+  - column_names
+    - name
+    - kind (client/provider)
+
+addresses
+  - belong_to client
+  - column_names
+    - line one
+    - line two
+    - zip-code
+    - city
+    - state
+    - country
 transactions
   - column_names
     - amount

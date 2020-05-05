@@ -24,6 +24,7 @@ gem 'jquery-ui-rails'
 gem 'cancancan'
 gem 'pg',  '0.20.0'
 gem 'stripe'
+gem 'rack-cors'
 
 
 group :development, :test do
