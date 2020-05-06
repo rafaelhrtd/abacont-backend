@@ -66,6 +66,16 @@ class Contact < ApplicationRecord
     end
   end
 
+  def self.get_search_results(user:, params:)
+    contacts = Contact.where(company: user.company).where(category: params[:category])\
+      .order(name: :asc)
+    results = []
+    contacts.each do |contact|
+      results.push({id: contact.id, name: contact.name})
+    end
+    return results
+  end
+
   private
 
   def appropriate_category

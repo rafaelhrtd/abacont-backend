@@ -11,7 +11,7 @@ user = User.create(first_name: "Rafael", last_name: "Hurtado", email: "test@gmai
 comp = user.company
 
 2.times do |k|
-    5.times do |i|
+    15.times do |i|
         contact = Contact.new
         contact.name = "Cliente #{i}" if k == 0
         contact.name = "Proveedor #{i}" if k == 1

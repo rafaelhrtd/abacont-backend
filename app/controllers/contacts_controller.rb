@@ -20,13 +20,10 @@ class ContactsController < ApplicationController
     end
 
     def index 
-        if !params[:category].nil?
-            contacts = current_user.company.contacts.where(category: params[:category])
-            render json: {objects: contacts}
-        else 
-            contacts = current_user.company.contacts
-            render json: {objects: contacts}
-        end
+        search_contacts = Contact.get_search_results(user: current_user, params: params)
+        show_contacts = Contact.where(company: current_user.company)\
+            .where(category: params[:category]).order(updated_at: :desc).first(5)
+        render json: {contacts: show_contacts, objects: search_contacts}
     end
 
     def update

@@ -152,6 +152,7 @@ class Transaction < ApplicationRecord
     self.children.each do |child|
       balance -= child.amount 
     end
+    balance = 0 if balance < 0
     self.update(balance: balance)
   end
   
@@ -178,7 +179,7 @@ class Transaction < ApplicationRecord
       Transaction.where(parent_id: self.parent_id).each do |pmt|
         balance -= pmt.amount
       end
-      balance -= self.amount
+      balance = balance.round(2) - self.amount
       if balance < -0.0001
         errors.add(:amount, :excessive_payment, message: "is greater than parent's remaining balance.")
       end
