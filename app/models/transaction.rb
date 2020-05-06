@@ -20,6 +20,7 @@ class Transaction < ApplicationRecord
   after_save :adjust_balance
   after_destroy :post_destroy_recalculate
   after_create :get_parent_names
+  attr_accessor :contact_name, :project_name
 
 
   accepts_nested_attributes_for :contact
@@ -78,12 +79,20 @@ class Transaction < ApplicationRecord
       transactions = Transaction.get_dates(year: params[:year], month: (params[:month].to_i + 1), user: user)
       transactions.order(date: :desc)
     end
-    return {
+    return_object = {
       revenue: transactions.where(category: "revenue").order(date: :desc).first(5),
       expense: transactions.where(category: "expense").order(date: :desc).first(5),
       payable: transactions.where(category: "payable").order(date: :desc).first(5),
       receivable: transactions.where(category: "receivable").order(date: :desc).first(5),
     }
+    return_object.each do |key, value|
+      value.each do |tran|
+        tran.project_name = tran.project.name if tran.project != nil
+        tran.contact_name = tran.contact.name if tran.contact != nil
+      end
+    end
+    print return_object
+    return return_object
   end
 
   # company summary

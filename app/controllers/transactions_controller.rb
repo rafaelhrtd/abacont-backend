@@ -10,6 +10,8 @@ class TransactionsController < ApplicationController
 
     def show 
         transaction = Transaction.find(params[:id])
+        transaction.contact_name = transaction.contact.name if !transaction.contact.nil?
+        transaction.project_name = transaction.project.name if !transaction.project.nil?
         children = transaction.children.order(date: :desc).first(5)
         if !transaction.nil? 
             render json: {transaction: transaction, children: children}

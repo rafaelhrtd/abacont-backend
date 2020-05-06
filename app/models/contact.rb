@@ -8,7 +8,6 @@ class Contact < ApplicationRecord
   validates :name, presence: true
   validate :appropriate_category
   before_validation :strip_whitespace
-  after_save :update_dependents
 
   before_create { |cont| cont.balance = 0 }
 
@@ -28,18 +27,6 @@ class Contact < ApplicationRecord
 
   def update_time
     self.touch(:updated_at)
-  end
-
-  # update contact name in dependents 
-  def update_dependents
-    if !self.previous_changes[:name].nil? || self.id_previously_changed?
-      self.transactions.each do |tran|
-        tran.update(contact_name: self.name)
-      end
-      self.projects.each do |proj|
-        proj.update(contact_name: self.name)
-      end
-    end
   end
 
   def latest_transactions

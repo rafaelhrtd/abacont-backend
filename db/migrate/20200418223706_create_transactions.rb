@@ -6,8 +6,6 @@ class CreateTransactions < ActiveRecord::Migration[5.2]
       t.references :contact, foreign_key: true, null: true
       t.references :transaction, :parent, index: true
       t.string :description
-      t.string :contact_name
-      t.string :project_name
       t.string :category
       t.string :bill_number
       t.date :date
