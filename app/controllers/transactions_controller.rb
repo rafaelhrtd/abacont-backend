@@ -18,7 +18,7 @@ class TransactionsController < ApplicationController
             child.project_name = child.project.name if !child.project.nil?
         end
         print "\n\n\n#{transaction}\n\n\n"
-        print "\n\n\n#{transaction}\n\n\n"
+        print "\n\n\n#{transactionc.contact_name}\n\n\n"
         if !transaction.nil? 
             render json: {transaction: transaction, children: children}
         else 
