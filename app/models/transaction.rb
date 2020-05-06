@@ -91,7 +91,6 @@ class Transaction < ApplicationRecord
         tran.contact_name = tran.contact.name if tran.contact != nil
       end
     end
-    print return_object
     return return_object
   end
 
