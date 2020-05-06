@@ -13,6 +13,10 @@ class TransactionsController < ApplicationController
         transaction.contact_name = transaction.contact.name if !transaction.contact.nil?
         transaction.project_name = transaction.project.name if !transaction.project.nil?
         children = transaction.children.order(date: :desc).first(5)
+        children.each do |child|
+            child.contact_name = child.contact.name if !child.contact.nil?
+            child.project_name = child.project.name if !child.project.nil?
+        end
         if !transaction.nil? 
             render json: {transaction: transaction, children: children}
         else 
