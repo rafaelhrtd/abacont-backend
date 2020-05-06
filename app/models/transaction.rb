@@ -110,6 +110,15 @@ class Transaction < ApplicationRecord
       payable: Transaction.total_from_collection(transactions: transactions.where(category: "payable"))
     }
   end
+  
+  # allows sending of virtual attributes as json
+  def as_json(options = { })
+    # just in case someone says as_json(nil) and bypasses
+    # our default...
+    super((options || { }).merge({
+      :methods => [:project_name, :contact_name]
+    }))
+  end
 
   # get totals
   def self.total_from_collection(transactions:)

@@ -40,13 +40,4 @@ class ApplicationRecord < ActiveRecord::Base
       return records
     end
   end
-
-  # allows sending of virtual attributes as json
-  def as_json(options = { })
-    # just in case someone says as_json(nil) and bypasses
-    # our default...
-    super((options || { }).merge({
-      :methods => [:finished_items, :unfinished_items]
-    }))
-  end
 end
