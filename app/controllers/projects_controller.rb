@@ -8,7 +8,7 @@ class ProjectsController < ApplicationController
     def create 
         project = Project.create(project_params)
         if project.persisted?
-            render json: {transaction: project}
+            render json: {project: project}
         else 
             render json: {errors: true, project: project.errors}
         end
