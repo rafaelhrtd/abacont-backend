@@ -35,6 +35,12 @@ class Contact < ApplicationRecord
     transactions[:revenue] = self.transactions.where(category: "revenue").order(date: :desc).first(5)
     transactions[:payable] = self.transactions.where(category: "payable").order(date: :desc).first(5)
     transactions[:receivable] = self.transactions.where(category: "receivable").order(date: :desc).first(5)
+    transactions.each do |key, collection|
+      collection.each do |tran|
+        tran.contact_name = tran.contact.name if !tran.contact.nil?
+        tran.project_name = tran.project.name if !tran.project.nil?
+      end
+    end
     return transactions
   end
 
