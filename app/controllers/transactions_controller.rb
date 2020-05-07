@@ -1,4 +1,5 @@
 class TransactionsController < ApplicationController
+    load_and_authorize_resource
     def create 
         transaction = Transaction.create(transaction_params)
         if transaction.persisted?

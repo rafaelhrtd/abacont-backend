@@ -1,4 +1,5 @@
 class ProjectsController < ApplicationController
+    load_and_authorize_resource
 
     def index 
         render json: {objects: current_user.company.projects}

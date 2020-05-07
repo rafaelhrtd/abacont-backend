@@ -1,4 +1,5 @@
 class CompaniesController < ApplicationController
+    load_and_authorize_resource
     def test
         print headers["Authorization"]
         render json: {
