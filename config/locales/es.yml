@@ -46,9 +46,9 @@ es:
               need_contact: "Este tipo de transacción requiere un contacto (proveedor o cliente)."
             no_parent_allowed: "Este tipo de transacción no puede pertencer a otra."
             contact_id:
-              non_existent_contact: "El cliente agregado no existe en la base de datos. Favor de hacer click en el botón azul para agregar uno nuevo."
+              non_existent_contact: "El contacto agregado no existe en la base de datos. Favor de seleccionarlo de entre las opciones que aparezcan, o de hacer click en el botón azul para agregar uno nuevo."
             project_id:
-              non_existent_project: "El proyecto agregado no existe en la base de datos. Favor de hacer click en el botón azul para agregar uno nuevo."
+              non_existent_project: "El proyecto agregado no existe en la base de datos. Favor de seleccionarlo de entre las opciones que aparezcan, o de hacer click en el botón azul para agregar uno nuevo."
         project: 
           attributes:
             value: 
@@ -61,7 +61,7 @@ es:
               blank: "El nombre del proyecto no puede estar en blanco."
               taken: "Un proyecto con este nombre ya existe en esta compañía. Para evitar confusión, por favor agrega algún identificador único o elimina el proyecto existente."
             contact_id:
-              non_existent_contact: "El cliente agregado no existe en la base de datos. Favor de hacer click en el botón azul para agregar uno nuevo."
+              non_existent_contact: "El cliente agregado no existe en la base de datos. Favor de seleccionarlo de entre las opciones que aparezcan, o de hacer click en el botón azul para agregar uno nuevo."
   date:
     abbr_day_names:
     - dom
