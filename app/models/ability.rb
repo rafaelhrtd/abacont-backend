@@ -12,9 +12,9 @@ class Ability
         # company corresponds to user's
         condition = tran.company == nil || tran.company == user.company
         # contact is of the user's company
-        condition = condition && (contact_id == nil || Contact.find(contact_id).company == user.company)
+        condition = condition && (contact_id == nil || Contact.find(contact_id).company == user.company) || tran.contact_id == 0
         # project is of the user's company
-        condition = condition && (project_id == nil || Project.find(project_id).company == user.company)
+        condition = condition && (project_id == nil || Project.find(project_id).company == user.company) || tran.project_id == 0
         condition
       end
 
@@ -27,7 +27,7 @@ class Ability
         # company corresponds to user's
         condition = project.company == nil || project.company == user.company
         # contact is of the user's company
-        condition = condition && (contact_id == nil || Contact.find(contact_id).company == user.company)
+        condition = condition && (contact_id == nil || Contact.find(contact_id).company == user.company) || project.contact_id == 0
       end
 
     end

@@ -11,7 +11,9 @@ class Transaction < ApplicationRecord
   validate :excessive_payment
   validate :must_have_contact
   validate :appropriate_contact
+  validate :non_existent_project
   validate :appropriate_parent
+  validate :non_existent_contact
   validates :category, presence: true
   # set balance to zero before saving
   before_create { |trans| trans.balance = trans.amount }
@@ -224,6 +226,19 @@ class Transaction < ApplicationRecord
     if !self.parent.nil?
       errors.add(:parent_id, :unacceptable_parent, message: "must be either a payable or a receivable") if \
               !self.parent.promised?
+    end
+  end
+
+  # non-existent contact
+  def non_existent_contact
+    if self.contact_id == 0
+      errors.add(:contact_id, :non_existent_contact)
+    end
+  end
+  # non-existent contact
+  def non_existent_project
+    if self.project_id == 0
+      errors.add(:project_id, :non_existent_project)
     end
   end
 

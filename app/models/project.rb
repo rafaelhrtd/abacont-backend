@@ -6,11 +6,13 @@ class Project < ApplicationRecord
   validates :value, presence: true, numericality: {greater_than: 0}
   validates :name, presence: true
   validate :unique_for_company
+  validate :must_be_client
+  validate :non_existent_contact
   accepts_nested_attributes_for :contact
   validates_associated :contact
   after_save :update_dependents
 
-  validate :must_be_client
+
   before_validation :strip_whitespace
 
   attr_accessor :contact_name
@@ -118,6 +120,15 @@ class Project < ApplicationRecord
   def must_be_client
     if !self.contact.nil? && !self.contact.is_client?
       errors.add(:contact, :not_client)
+    end
+  end
+
+
+  # if submitted contact does not exist
+  def non_existent_contact
+    print "\n\n\n#{self.contact_id}\n\n\n"
+    if self.contact_id == 0
+      errors.add(:contact_id, :non_existent_contact)
     end
   end
 
