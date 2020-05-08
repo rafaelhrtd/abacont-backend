@@ -81,19 +81,51 @@ class Transaction < ApplicationRecord
       transactions = Transaction.get_dates(year: params[:year], month: (params[:month].to_i + 1), user: user)
       transactions.order(date: :desc)
     end
-    return_object = {
-      revenue: transactions.where(category: "revenue").order(date: :desc).first(5),
-      expense: transactions.where(category: "expense").order(date: :desc).first(5),
-      payable: transactions.where(category: "payable").order(date: :desc).first(5),
-      receivable: transactions.where(category: "receivable").order(date: :desc).first(5),
-    }
-    return_object.each do |key, value|
-      value.each do |tran|
+
+    if params[:project_id] != nil 
+      transactions = transactions.where(project_id: params[:project_id])
+    end
+
+    if params[:parent_id] != nil 
+      transactions = transactions.where(parent_id: params[:parent_id])
+    end
+
+    if params[:contact_id] != nil 
+      transactions = transactions.where(contact_id: params[:contact_id])
+    end
+
+    if params[:page] == nil
+      return_object = {
+        revenue: transactions.where(category: "revenue").order(date: :desc, created_at: :desc).first(5),
+        expense: transactions.where(category: "expense").order(date: :desc, created_at: :desc).first(5),
+        payable: transactions.where(category: "payable").order(date: :desc, created_at: :desc).first(5),
+        receivable: transactions.where(category: "receivable").order(date: :desc, created_at: :desc).first(5),
+      }
+      return_object.each do |key, value|
+        value.each do |tran|
+          tran.project_name = tran.project.name if tran.project != nil
+          tran.contact_name = tran.contact.name if tran.contact != nil
+        end
+      end
+      return { transactions: return_object, summary: Transaction.company_summary(user: user, params: params)}
+
+    else
+
+      per_page = 10
+      first_index = (params[:page].to_i - 1) * per_page
+      last_index = params[:page].to_i * per_page -1
+      transactions = transactions.where(category: params[:category])
+
+      # get total number of pages
+      pages = (transactions.count / 20.0).ceil()
+
+      transactions = transactions.order(date: :desc, created_at: :desc)[first_index..last_index]
+      transactions.each do |tran|
         tran.project_name = tran.project.name if tran.project != nil
         tran.contact_name = tran.contact.name if tran.contact != nil
       end
+      return {transactions: transactions, total_pages: pages}
     end
-    return return_object
   end
 
   # company summary

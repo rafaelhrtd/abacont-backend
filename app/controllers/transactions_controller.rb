@@ -36,11 +36,8 @@ class TransactionsController < ApplicationController
     end
 
     def index 
-        transaction = Transaction.get_by_params(params: params, user: current_user)
-        render json: {
-            transactions: transaction, 
-            summary: Transaction.company_summary(user: current_user, params: params)
-        }
+        object = Transaction.get_by_params(params: params, user: current_user)
+        render json: object
     end
 
     private 
