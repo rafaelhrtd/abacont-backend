@@ -82,6 +82,10 @@ class Contact < ApplicationRecord
     self.phone = self.phone.strip unless self.phone.nil?
     self.name = self.name.strip unless self.name.nil?
     self.email = self.email.strip unless self.email.nil?
+
+    self.email = nil if self.email != nil && self.email.length == 0
+    self.name = nil if self.name != nil && self.name.length == 0    
+    self.phone = nil if self.phone != nil && self.phone.length == 0    
   end
 
 end

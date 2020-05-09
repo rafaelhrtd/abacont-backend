@@ -28,6 +28,10 @@ class User < ApplicationRecord
     self.first_name = self.first_name.strip unless self.first_name.nil?
     self.last_name = self.last_name.strip unless self.last_name.nil?
     self.email = self.email.strip unless self.email.nil?
+
+    self.first_name = nil if self.first_name != nil && self.first_name.length == 0
+    self.last_name = nil if self.last_name != nil && self.last_name.length == 0  
+    self.email = nil if self.email != nil && self.email.length == 0  
   end
 
 end

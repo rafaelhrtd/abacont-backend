@@ -52,5 +52,7 @@ class Company < ApplicationRecord
   private 
   def strip_whitespace
     self.name = self.name.strip unless self.name.nil?
+
+    self.name = nil if self.name != nil && self.name.length == 0
   end
 end

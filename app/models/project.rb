@@ -143,6 +143,11 @@ class Project < ApplicationRecord
     self.description = self.description.strip unless self.description.nil?
     self.name = self.name.strip unless self.name.nil?
     self.bill_number = self.bill_number.strip unless self.bill_number.nil?
+
+
+    self.description = nil if self.description != nil && self.description.length == 0
+    self.name = nil if self.name != nil && self.name.length == 0
+    self.bill_number = nil if self.bill_number != nil && self.bill_number.length == 0  
   end
   
 end
