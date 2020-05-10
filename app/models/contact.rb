@@ -90,9 +90,9 @@ class Contact < ApplicationRecord
           category: self.category)
 
         # remove contact from orphans where possible
-        self.projects.each { |project| project.update(contact_id: nil)}
-        self.transactions.where(category: "expense").each {|tran| tran.update(contact_id: nil, contact_name: nil)}
-        self.transactions.where(category: "revenue").each {|tran| tran.update(contact_id: nil, contact_name: nil)}
+        self.projects.each { |project| project.update(contact_id: contact.id)}
+        self.transactions.where(category: "expense").each {|tran| tran.update(contact_id: contact.id, contact_name: nil)}
+        self.transactions.where(category: "revenue").each {|tran| tran.update(contact_id: contact.id, contact_name: nil)}
 
         # give temporary contact to orphaned debts
         self.transactions.where(category: "payable").each {|tran| tran.update(contact_id: contact.id, contact_name: nil)}
