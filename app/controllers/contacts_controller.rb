@@ -11,6 +11,12 @@ class ContactsController < ApplicationController
         end
     end
 
+    def destroy 
+        contact = Contact.find(params[:id])
+        contact = contact.destroy_with_params(params: params, user: current_user)
+        render json: contact
+    end
+
     def show 
         contact = Contact.find(params[:id])
         if !contact.nil?

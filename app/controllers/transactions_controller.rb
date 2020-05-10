@@ -40,6 +40,12 @@ class TransactionsController < ApplicationController
         render json: object
     end
 
+    def destroy 
+        transaction = Transaction.find(params[:id])
+        transaction = transaction.destroy_with_params(params: params, user: current_user)
+        render json: transaction
+    end
+
     private 
     def transaction_params
         params.require(:transaction).permit(:amount, :description, :category, \

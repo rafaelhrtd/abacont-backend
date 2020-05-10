@@ -206,6 +206,25 @@ class Transaction < ApplicationRecord
     balance = 0 if balance < 0
     self.update(balance: balance)
   end
+
+
+  def destroy_with_params(params:, user:)
+    if user.valid_password?(params[:password])
+      if self.company_id != user.company_id
+        return { error: "Esta transacción no pertenece a tu compañía." }
+      end
+      if params[:destroy_children] == "true"
+        self.children.each {|tran| tran.destroy_with_params(params: params, user: user)}
+      else 
+        # remove project from transactions
+        self.children.each {|tran| tran.update(parent_id: nil)}
+      end
+      self.destroy
+      return {success: true}
+    else
+      return {error: "La contraseña ingresada no es la correcta."}
+    end
+  end
   
 
 

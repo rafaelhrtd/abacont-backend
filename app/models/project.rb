@@ -75,6 +75,25 @@ class Project < ApplicationRecord
     object[:expenses][:paid] = (self.total_paid)
     object
   end
+  
+  
+  def destroy_with_params(params:, user:)
+    if user.valid_password?(params[:password])
+      if self.company_id != user.company_id
+        return { error: "Este proyecto no pertenece a tu compañía." }
+      end
+      if params[:destroy_children] == "true"
+        self.transactions.each {|tran| tran.destroy_with_params(params: params, user: user)}
+      else 
+        # remove project from transactions
+        self.transactions.each {|tran| tran.update(project_id: nil, project_name: nil)}
+      end
+      self.destroy
+      return {success: true}
+    else
+      return {error: "La contraseña ingresada no es la correcta."}
+    end
+  end
 
   # calculate total that has been billed to receive (not necessarily paid already)
   def billed_to_receive

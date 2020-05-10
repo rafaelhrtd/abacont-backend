@@ -69,6 +69,44 @@ class Contact < ApplicationRecord
     return results
   end
 
+  # destroy given params 
+  def destroy_with_params(params:, user:)
+    if user.valid_password?(params[:password])
+      if self.company_id != user.company_id
+        return { error: "Este contacto no pertenece a tu compañía." }
+      end
+      if params[:destroy_children] == "true"
+
+        self.projects.each {|project| project.destroy_with_params(params: params, user: user)}
+        self.transactions.each {|tran| tran.destroy_with_params(params: params, user: user)}
+
+      else 
+        # get or create temporary contact
+        company = self.company
+
+        contact = Contact.create(
+          company_id: company.id,
+          name: "Contacto borrado #{DateTime.now.strftime("%d/%m/%Y")}",
+          category: self.category)
+
+        # remove contact from orphans where possible
+        self.projects.each { |project| project.update(contact_id: nil)}
+        self.transactions.where(category: "expense").each {|tran| tran.update(contact_id: nil, contact_name: nil)}
+        self.transactions.where(category: "revenue").each {|tran| tran.update(contact_id: nil, contact_name: nil)}
+
+        # give temporary contact to orphaned debts
+        self.transactions.where(category: "payable").each {|tran| tran.update(contact_id: contact.id, contact_name: nil)}
+        self.transactions.where(category: "receivable").each {|tran| tran.update(contact_id: contact.id, contact_name: nil)}
+
+        contact.destroy if contact.transactions.count == 0
+      end
+      self.destroy
+      return {success: true}
+    else
+      return {error: "La contraseña ingresada no es la correcta."}
+    end
+  end
+
   private
 
   def appropriate_category

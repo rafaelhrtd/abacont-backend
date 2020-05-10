@@ -27,7 +27,7 @@ module Accounting
          origins '*'
          resource '*',
            headers: [:any, 'Authorization'],
-           :methods => [:get, :post, :patch, :options],
+           :methods => [:get, :post, :patch, :delete, :options],
            expose: ['Authorization']
        end
     end

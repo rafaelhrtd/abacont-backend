@@ -14,6 +14,12 @@ class ProjectsController < ApplicationController
         end
     end
 
+    def destroy 
+        project = Project.find(params[:id])
+        project = project.destroy_with_params(params: params, user: current_user)
+        render json: project
+    end
+
 
     def index 
         search_projects = Project.get_search_results(user: current_user, params: params)
