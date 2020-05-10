@@ -97,7 +97,7 @@ class Contact < ApplicationRecord
         # give temporary contact to orphaned debts
         self.transactions.where(category: "payable").each {|tran| tran.update(contact_id: contact.id, contact_name: nil)}
         self.transactions.where(category: "receivable").each {|tran| tran.update(contact_id: contact.id, contact_name: nil)}
-
+        contact.recalculate_balance
         contact.destroy if contact.transactions.count == 0
       end
       self.destroy
