@@ -21,7 +21,7 @@ comp = user.company
         contact.category = "provider" if k == 1
         contact.company = comp
         contact.save
-        100.times do |j|
+        25.times do |j|
             transaction = Transaction.new
             transaction.amount = rand() * 1000
             transaction.description = "A description"
@@ -33,7 +33,7 @@ comp = user.company
             transaction.date = rand(1.years).seconds.ago
             transaction.save
         end
-        100.times do |j|
+        25.times do |j|
             transaction = Transaction.new
             transaction.amount = rand() * 1000
             transaction.description = "A description"

@@ -50,6 +50,7 @@ class TransactionsController < ApplicationController
     def transaction_params
         params.require(:transaction).permit(:amount, :description, :category, \
             :date, :contact_id, :project_id, :bill_number, :company_id, :parent_id,\
+            :payment_type, :cheque_number,\
              contact_attributes: [:name, :email, :phone, :company_id, :category],\
              project_attributes: [:name, :description, :value, :contact_id, :bill_number, :company_id, \
              contact_attributes: [:name, :email, :phone, :company_id, :category]])

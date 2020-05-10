@@ -1,4 +1,6 @@
 class ApplicationRecord < ActiveRecord::Base
+  before_save :nil_if_blank
+
   self.abstract_class = true
   def self.get_dates(month: nil, year: nil, user:)
 
@@ -40,4 +42,12 @@ class ApplicationRecord < ActiveRecord::Base
       return records
     end
   end
+
+  # make blank things nil
+  def nil_if_blank
+    self.attributes.each_pair do |name, value|
+      self[name] = nil if self[name] == ""
+    end
+  end
+
 end
