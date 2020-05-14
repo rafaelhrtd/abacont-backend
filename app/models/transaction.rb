@@ -93,14 +93,26 @@ class Transaction < ApplicationRecord
     if params[:contact_id] != nil 
       transactions = transactions.where(contact_id: params[:contact_id])
     end
-
-    if params[:page] == nil
-      return_object = {
-        revenue: transactions.where(category: "revenue").order(date: :desc, created_at: :desc).first(5),
-        expense: transactions.where(category: "expense").order(date: :desc, created_at: :desc).first(5),
-        payable: transactions.where(category: "payable").order(date: :desc, created_at: :desc).first(5),
-        receivable: transactions.where(category: "receivable").order(date: :desc, created_at: :desc).first(5),
-      }
+    # if no page is provided
+    if params[:page] == nil || params[:xlsx] == "true"
+      print "\n\n\n\n fuck \n\n\n"
+      if params[:xlsx] != "true"
+        print "\n\n\n\n #{params} \n\n\n\n"
+        return_object = {
+          revenue: transactions.where(category: "revenue").order(date: :desc, created_at: :desc).first(5),
+          expense: transactions.where(category: "expense").order(date: :desc, created_at: :desc).first(5),
+          payable: transactions.where(category: "payable").order(date: :desc, created_at: :desc).first(5),
+          receivable: transactions.where(category: "receivable").order(date: :desc, created_at: :desc).first(5),
+        }
+      else 
+        print "\n\n\n\n all \n\n\n\n"
+        return_object = {
+          revenue: transactions.where(category: "revenue").order(date: :desc, created_at: :desc),
+          expense: transactions.where(category: "expense").order(date: :desc, created_at: :desc),
+          payable: transactions.where(category: "payable").order(date: :desc, created_at: :desc),
+          receivable: transactions.where(category: "receivable").order(date: :desc, created_at: :desc),
+        }        
+      end
       return_object.each do |key, value|
         value.each do |tran|
           tran.project_name = tran.project.name if tran.project != nil
