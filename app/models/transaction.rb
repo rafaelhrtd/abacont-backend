@@ -74,14 +74,15 @@ class Transaction < ApplicationRecord
   # get for index
   def self.get_by_params(params:, user:)
     transactions = user.company.transactions
-    if params[:yearly] == "true"
-      transactions = Transaction.get_dates(year: params[:year], user: user)
-      transactions.order(date: :desc)
-    else 
-      transactions = Transaction.get_dates(year: params[:year], month: (params[:month].to_i + 1), user: user)
-      transactions.order(date: :desc)
+    unless params[:xls] && params[:project_id] != nil
+      if params[:yearly] == "true"
+        transactions = Transaction.get_dates(year: params[:year], user: user)
+        transactions.order(date: :desc)
+      else 
+        transactions = Transaction.get_dates(year: params[:year], month: (params[:month].to_i + 1), user: user)
+        transactions.order(date: :desc)
+      end
     end
-
     if params[:project_id] != nil 
       transactions = transactions.where(project_id: params[:project_id])
     end
@@ -95,9 +96,7 @@ class Transaction < ApplicationRecord
     end
     # if no page is provided
     if params[:page] == nil || params[:xlsx] == "true"
-      print "\n\n\n\n fuck \n\n\n"
       if params[:xlsx] != "true"
-        print "\n\n\n\n #{params} \n\n\n\n"
         return_object = {
           revenue: transactions.where(category: "revenue").order(date: :desc, created_at: :desc).first(5),
           expense: transactions.where(category: "expense").order(date: :desc, created_at: :desc).first(5),
@@ -105,7 +104,6 @@ class Transaction < ApplicationRecord
           receivable: transactions.where(category: "receivable").order(date: :desc, created_at: :desc).first(5),
         }
       else 
-        print "\n\n\n\n all \n\n\n\n"
         return_object = {
           revenue: transactions.where(category: "revenue").order(date: :desc, created_at: :desc),
           expense: transactions.where(category: "expense").order(date: :desc, created_at: :desc),
