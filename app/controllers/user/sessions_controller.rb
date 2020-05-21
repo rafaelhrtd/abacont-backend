@@ -3,6 +3,14 @@
 class User::SessionsController < Devise::SessionsController
   respond_to :json
 
+  def user_info
+    render json: {
+      user: current_user,
+      companies: current_user.companies,
+      company: current_user.company
+    }
+  end
+
   private
 
   def respond_with(resource, _opts = {})
@@ -12,6 +20,7 @@ class User::SessionsController < Devise::SessionsController
   def respond_to_on_destroy
     head :no_content
   end
+
   # before_action :configure_sign_in_params, only: [:create]
 
   # GET /resource/sign_in

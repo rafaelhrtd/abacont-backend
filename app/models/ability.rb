@@ -18,6 +18,16 @@ class Ability
         condition
       end
 
+      can [:index, :switch_company], Company do |company|
+        true
+      end
+
+      can [:edit, :update], Company do |company|
+        condition = (user.company == company && \
+          ["owner"].include?(CompanyTagging.where(user: user).where(company: company).first.role))
+        condition
+      end
+
       can :manage, Contact do |contact|
         # company corresponds to user's
         condition = contact.company == nil || contact.company == user.company
