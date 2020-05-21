@@ -42,8 +42,8 @@ class Project < ApplicationRecord
     transactions = {}
     transactions[:expense] = self.transactions.where(category: "expense").order(date: :desc).first(5)
     transactions[:revenue] = self.transactions.where(category: "revenue").order(date: :desc).first(5)
-    transactions[:payable] = self.transactions.where(category: "payable").order(date: :desc).first(5)
-    transactions[:receivable] = self.transactions.where(category: "receivable").order(date: :desc).first(5)
+    transactions[:payable] = self.transactions.where(category: "payable").where("balance > ?", 5E-3).order(date: :desc).first(5)
+    transactions[:receivable] = self.transactions.where(category: "receivable").where("balance > ?", 5E-3).order(date: :desc).first(5)
 
     transactions.each do |key, collection|
       collection.each do |tran|

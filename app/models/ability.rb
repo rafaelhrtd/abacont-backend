@@ -18,6 +18,12 @@ class Ability
         condition
       end
 
+      can :index, Transaction do |tran|
+        condition = params[:contact_id] == nil || user.company.contacts.where(id: params[:contact_id]).count != 0
+        condition = condition && (params[:project_id] == nil || user.company.projects.where(id: params[:project_id]).count != 0)
+        condition
+      end
+
       can [:index, :switch_company], Company do |company|
         true
       end

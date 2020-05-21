@@ -92,7 +92,9 @@ class Transaction < ApplicationRecord
     end
 
     if params[:contact_id] != nil 
+      print "\n\n #{transactions.count} \n\n"
       transactions = transactions.where(contact_id: params[:contact_id])
+      print "\n\n #{transactions.count} \n\n"
     end
     # if no page is provided
     if params[:page] == nil || params[:xlsx] == "true"
@@ -100,15 +102,15 @@ class Transaction < ApplicationRecord
         return_object = {
           revenue: transactions.where(category: "revenue").order(date: :desc, created_at: :desc).first(5),
           expense: transactions.where(category: "expense").order(date: :desc, created_at: :desc).first(5),
-          payable: transactions.where(category: "payable").order(date: :desc, created_at: :desc).first(5),
-          receivable: transactions.where(category: "receivable").order(date: :desc, created_at: :desc).first(5),
+          payable: transactions.where(category: "payable").where("balance > ?", 5E-3).order(date: :desc, created_at: :desc).first(5),
+          receivable: transactions.where(category: "receivable").where("balance > ?", 5E-3).order(date: :desc, created_at: :desc).first(5),
         }
       else 
         return_object = {
           revenue: transactions.where(category: "revenue").order(date: :desc, created_at: :desc),
           expense: transactions.where(category: "expense").order(date: :desc, created_at: :desc),
-          payable: transactions.where(category: "payable").order(date: :desc, created_at: :desc),
-          receivable: transactions.where(category: "receivable").order(date: :desc, created_at: :desc),
+          payable: transactions.where(category: "payable").where("balance > ?", 5E-3).order(date: :desc, created_at: :desc),
+          receivable: transactions.where(category: "receivable").where("balance > ?", 5E-3).order(date: :desc, created_at: :desc),
         }        
       end
       return_object.each do |key, value|
@@ -120,11 +122,13 @@ class Transaction < ApplicationRecord
       return { transactions: return_object, summary: Transaction.company_summary(user: user, params: params)}
 
     else
-
       per_page = 10
       first_index = (params[:page].to_i - 1) * per_page
       last_index = params[:page].to_i * per_page -1
       transactions = transactions.where(category: params[:category])
+      if ["payable", "receivable"].includes(params[:category])
+        transactions = transactions.where("balance > ?", 5E-3)
+      end
 
       # get total number of pages
       pages = (transactions.count / 20.0).ceil()
