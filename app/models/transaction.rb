@@ -126,7 +126,7 @@ class Transaction < ApplicationRecord
       first_index = (params[:page].to_i - 1) * per_page
       last_index = params[:page].to_i * per_page -1
       transactions = transactions.where(category: params[:category])
-      if ["payable", "receivable"].includes(params[:category])
+      if ["payable", "receivable"].include?(params[:category])
         transactions = transactions.where("balance > ?", 5E-3)
       end
 
