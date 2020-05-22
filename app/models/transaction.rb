@@ -131,7 +131,7 @@ class Transaction < ApplicationRecord
       end
 
       # get total number of pages
-      pages = (transactions.count / 20.0).ceil()
+      pages = (transactions.count / 10.0).ceil()
 
       transactions = transactions.order(date: :desc, created_at: :desc)[first_index..last_index]
       transactions.each do |tran|
