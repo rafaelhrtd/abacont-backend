@@ -49,6 +49,15 @@ class Company < ApplicationRecord
     self.company_taggings.where(role: "owner").first.user
   end
 
+  # create employee invite
+
+  def create_invite(params:, user:)
+    params[:token] = SecureRandom.urlsafe_base64
+    params[:company_id] = self.id
+    params[:user_id] = user
+    return UserInvite.create(params)
+  end
+
   private 
   def strip_whitespace
     self.name = self.name.strip unless self.name.nil?

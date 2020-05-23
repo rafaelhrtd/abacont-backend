@@ -3,6 +3,7 @@ class ApplicationController < ActionController::API
   before_action :authenticate_user!
   respond_to :json
   rescue_from CanCan::AccessDenied, with: :access_denied
+  rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
 
 
   def current_ability
@@ -35,6 +36,12 @@ class ApplicationController < ActionController::API
   def access_denied
     render json: {}, status: :forbidden
   end
+
+
+
+  def record_not_found
+    render json: {}, status: 404
+end
 
   def configure_permitted_parameters
     devise_parameter_sanitizer.permit(:sign_up, keys: [:first_name, :last_name, company_attributes: [:name]])

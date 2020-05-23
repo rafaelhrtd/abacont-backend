@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_10_180721) do
+ActiveRecord::Schema.define(version: 2020_05_22_161517) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -99,6 +99,17 @@ ActiveRecord::Schema.define(version: 2020_05_10_180721) do
     t.index ["transaction_id"], name: "index_transactions_on_transaction_id"
   end
 
+  create_table "user_invites", force: :cascade do |t|
+    t.bigint "company_id"
+    t.bigint "user_id"
+    t.string "role"
+    t.string "token"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["company_id"], name: "index_user_invites_on_company_id"
+    t.index ["user_id"], name: "index_user_invites_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -125,5 +136,7 @@ ActiveRecord::Schema.define(version: 2020_05_10_180721) do
   add_foreign_key "transactions", "companies"
   add_foreign_key "transactions", "contacts"
   add_foreign_key "transactions", "projects"
+  add_foreign_key "user_invites", "companies"
+  add_foreign_key "user_invites", "users"
   add_foreign_key "users", "companies"
 end

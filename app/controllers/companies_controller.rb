@@ -28,6 +28,10 @@ class CompaniesController < ApplicationController
         end
     end
 
+    def create_invite 
+
+    end
+
     private 
     def company_params
         params.require(:company).permit(:name)
