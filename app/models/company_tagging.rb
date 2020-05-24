@@ -3,9 +3,17 @@ class CompanyTagging < ApplicationRecord
   belongs_to :company
   validate :unique_for_user
 
-  # returns the possible roles one can have within a company
-  def self.roles
-    return ["reader", "writer", "leader", "owner"]
+  def self.create_from_invite(invite:, user:)
+    tag = CompanyTagging.create({
+      company: invite.company,
+      role: "employee",
+      can_write: invite.can_write,
+      can_read: invite.can_read,
+      can_edit: invite.can_edit,
+      can_invite: invite.can_invite,
+      user: user})
+    print tag.errors.first
+    tag
   end
 
   def unique_for_user

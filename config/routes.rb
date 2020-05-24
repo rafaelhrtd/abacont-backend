@@ -20,7 +20,14 @@ Rails.application.routes.draw do
   
   get '/switch-company', to: 'companies#switch_company'
   get '/companies', to: 'companies#index'
+  post '/send_invite', to: 'companies#send_invite'
+  get '/invites', to: 'companies#invite_list'
   patch '/companies/:id', to: 'companies#update'
+  get '/delete_invite', to: 'companies#destroy_invite'
+  get '/resend_invite', to: 'companies#resend_invite'
+  get '/get_invite', to: 'companies#get_invite'
+  post '/claim_invite', to: 'companies#claim_invite'
+  
 
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end

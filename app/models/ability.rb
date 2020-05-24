@@ -29,9 +29,17 @@ class Ability
       end
 
       can [:edit, :update], Company do |company|
-        condition = (user.company == company && \
-          ["owner"].include?(CompanyTagging.where(user: user).where(company: company).first.role))
+        condition = (user.company == company && user.check_privilege(company: company, symbol: :can_edit))
         condition
+      end
+
+      can [:send_invite, :invite_list, :destroy_invite, :resend_invite], Company do |company|
+        condition = user.check_privilege(company: company, symbol: :can_invite)
+        condition 
+      end
+
+      can [:get_invite, :claim_invite], Company do |company|
+        return true 
       end
 
       can :manage, Contact do |contact|
@@ -46,6 +54,10 @@ class Ability
         condition = condition && (contact_id == nil || Contact.find(contact_id).company == user.company) || project.contact_id == 0
       end
 
+    else 
+      can [:get_invite, :claim_invite], Company do |company|
+        return true 
+      end
     end
   end
 end

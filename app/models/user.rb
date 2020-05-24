@@ -15,13 +15,32 @@ class User < ApplicationRecord
   has_many :company_taggings, dependent: :delete_all
   has_many :companies, through: :company_taggings
   accepts_nested_attributes_for :company
+  attr_accessor :token
   validates_associated :company
+  
+  # switch roles given company
 
-  # return role in given company (or nil if not part of company)
-  def get_role(company)
-    tag = self.company_taggings.where(company: company).first
-    return tag.nil? ? nil : tag.role
+  def switch_company(company:)
+    tag = CompanyTagging.where(user: self).where(company: company).first
+    return nil if tag == nil
+    self.update({
+      company_id: tag.company_id,
+      role: tag.role,
+      can_read: tag.can_read,
+      can_write: tag.can_write,
+      can_edit: tag.can_edit,
+      can_invite: tag.can_invite
+    })
+    return self
   end
+
+  # returns true or false depending
+  def check_privilege(company:, symbol:)
+    tag = CompanyTagging.where(company: company, user: self).first
+    return false if tag == nil 
+    return tag[symbol]
+  end
+
   private 
 
   def strip_whitespace

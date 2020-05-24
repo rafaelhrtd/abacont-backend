@@ -13,12 +13,40 @@ class User::RegistrationsController < Devise::RegistrationsController
 
   # POST /resource
   def create
-    build_resource(sign_up_params)
+
+    invite = UserInvite.where(token: sign_up_params[:token]).first if sign_up_params[:token] != nil
+    sign_up_params[:company_id] = invite.company_id  if sign_up_params[:token] != nil
+    render json: {errors: [invite: "does not exist"]} if sign_up_params[:token] != nil && invite == nil
+
+    if invite != nil 
+      build_resource(sign_up_params)
+      resource.company = invite.company
+    else 
+      build_resource(sign_up_params)
+    end
 
     resource.save
+    print (resource.errors.full_messages)
+    print (sign_up_params)
     yield resource if block_given?
     if resource.persisted?
-      CompanyTagging.create(company: resource.company, user: resource, role: "owner")
+      tag = nil
+      if sign_up_params[:token] != nil
+        tag = CompanyTagging.create_from_invite(invite: invite, user: resource)
+        resource.switch_company(company: tag.company)
+        invite.destroy
+      else 
+        tag = CompanyTagging.create({company: resource.company,
+          user: resource, 
+          role: "owner",
+          can_write: true,
+          can_read: true,
+          can_invite: true,
+          can_edit: true})
+      end
+
+      resource.switch_company(company: tag.company) 
+
       if resource.active_for_authentication?
         sign_up(resource_name, resource)
         render json: {user: resource, companies: resource.companies, company: resource.company}

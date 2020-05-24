@@ -62,6 +62,12 @@ es:
               taken: "Un proyecto con este nombre ya existe en esta compañía. Para evitar confusión, por favor agrega algún identificador único o elimina el proyecto existente."
             contact_id:
               non_existent_contact: "El cliente agregado no existe en la base de datos. Favor de seleccionarlo de entre las opciones que aparezcan, o de hacer click en el botón azul para agregar uno nuevo."
+        user_invite: 
+          attributes: 
+            email:
+              already_in_company: "Este usuario ya forma parte de la compañía."
+              already_invited: "Este usuario ya ha sido invitado a la compañía. Toma en cuenta que el correo podría estar en su fólder de correo no deseado. También puedes reenviar el correo en la sección de invitaciones pendientes."
+
   date:
     abbr_day_names:
     - dom

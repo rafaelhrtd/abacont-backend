@@ -4,10 +4,7 @@
     <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
   </head>
   <body>
-      <h1><%= @user.name %> te invita a unirte a su equipo en <%= @user.company.name %></h1>
-
-        <%= link_to "Haz click en el siguiente link para crear tu cuenta.", \
-            url_for(action: 'claim_invite', controller: 'user_invites', token: @token, email: @email) %>
-
+      <h1><%= @user.first_name %> te invita a unirte a su equipo en <%= @user.company.name %></h1>
+        <%= link_to "Haz click en aquí para aceptar la invitación.", @link %>
   </body>
 </html>
