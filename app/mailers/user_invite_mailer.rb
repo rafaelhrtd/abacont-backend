@@ -1,5 +1,5 @@
 class UserInviteMailer < ApplicationMailer
-    default from: "noreply@abacus.io"
+    default from: "rafael.hrtd@gmail.com"
 
     def invitation
         @user = params[:user]
