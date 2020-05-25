@@ -8,14 +8,17 @@ class Ability
       contact_id = params[:contact_id]
       project_id = params[:project_id]
 
-      can :manage, Transaction do |tran|
-        # company corresponds to user's
-        condition = tran.company == nil || tran.company == user.company
-        # contact is of the user's company
-        condition = condition && (contact_id == nil || Contact.find(contact_id).company == user.company) || tran.contact_id == 0
-        # project is of the user's company
-        condition = condition && (project_id == nil || Project.find(project_id).company == user.company) || tran.project_id == 0
-        condition
+      # Transaction privileges
+      can :show, Transaction do |tran|
+        condition = user.check_privilege(company: tran.company, symbol: :can_read)
+      end
+
+      can :create, Transaction do |tran|
+        condition = user.check_privilege(company: tran.company, symbol: :can_write)
+      end
+
+      can [:update, :edit, :destroy], Transaction do |tran|
+        condition = user.check_privilege(company: tran.company, symbol: :can_edit)
       end
 
       can :index, Transaction do |tran|
@@ -24,6 +27,7 @@ class Ability
         condition
       end
 
+      # Company privileges
       can [:index, :switch_company], Company do |company|
         true
       end
@@ -41,17 +45,42 @@ class Ability
       can [:get_invite, :claim_invite], Company do |company|
         return true 
       end
-
-      can :manage, Contact do |contact|
+      
+      # Contact privileges
+      can :index, Contact do |contact|
         # company corresponds to user's
         condition = contact.company == nil || contact.company == user.company
       end
 
-      can :manage, Project do |project|
+      can :show, Contact do |contact|
+        condition = user.check_privilege(company: contact.company, symbol: :can_read)
+      end
+
+      can :create, Contact do |contact|
+        condition = user.check_privilege(company: contact.company, symbol: :can_write)
+      end
+
+      can [:update, :edit, :destroy], Contact do |contact|
+        condition = user.check_privilege(company: contact.company, symbol: :can_edit)
+      end
+
+
+      # Project privileges
+      can :index, Project do |project|
         # company corresponds to user's
-        condition = project.company == nil || project.company == user.company
-        # contact is of the user's company
-        condition = condition && (contact_id == nil || Contact.find(contact_id).company == user.company) || project.contact_id == 0
+        condition = project.company == nil || project.company == project.company
+      end
+
+      can :show, Project do |project|
+        condition = user.check_privilege(company: project.company, symbol: :can_read)
+      end
+
+      can :create, Project do |project|
+        condition = user.check_privilege(company: project.company, symbol: :can_write)
+      end
+
+      can [:update, :edit, :destroy], Project do |project|
+        condition = user.check_privilege(company: project.company, symbol: :can_edit)
       end
 
     else 
