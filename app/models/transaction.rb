@@ -261,7 +261,7 @@ class Transaction < ApplicationRecord
     if !self.promised? && self.parent != nil
       balance = self.parent.amount
       Transaction.where(parent_id: self.parent_id).each do |pmt|
-        balance -= pmt.amount
+        balance -= pmt.amount unless pmt.id == self.id
       end
       balance = balance.round(2) - self.amount
       if balance < -0.0001
