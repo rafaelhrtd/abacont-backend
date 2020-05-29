@@ -4,6 +4,9 @@ class User::SessionsController < Devise::SessionsController
   respond_to :json
 
   def user_info
+    if current_user === nil 
+      render json: {}, status: 401
+    end
     render json: {
       user: current_user,
       companies: current_user.companies,
