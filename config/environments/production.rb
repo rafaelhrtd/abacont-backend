@@ -89,7 +89,7 @@ Rails.application.configure do
     :address        => 'smtp.sendgrid.net',
     :port           => '587',
     :authentication => :plain,
-    :user_name      => 'noreply@abacont.app',
+    :user_name      => 'noreply',
     :password       => '8SEeL2JgYc!3Ibds',
     :domain         => 'abacont.app',
     :enable_starttls_auto => true
