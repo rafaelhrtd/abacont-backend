@@ -57,11 +57,11 @@ Rails.application.configure do
   config.action_mailer.raise_delivery_errors = true
 
   ActionMailer::Base.smtp_settings = {
-    :address        => 'smtp.gmail.com',
-    :domain         => 'mail.google.com',
+    :address        => 'london.mxroute.com',
+    :domain         => 'abacont.app',
     :port           => 587,
-    :user_name      => 'rafael.railsapps@gmail.com',
-    :password       => '265623354610',
+    :user_name      => 'noreply@abacont.app',
+    :password       => 'Z#kw%3!17!VA9gV^',
     :authentication => :plain,
     :enable_starttls_auto => true
   }

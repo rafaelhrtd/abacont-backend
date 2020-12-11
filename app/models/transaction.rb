@@ -307,6 +307,31 @@ class Transaction < ApplicationRecord
     end
   end
 
+  # get info for plots
+  def self.plot_info(company:)
+    dt = DateTime.now
+    date = Date.new(dt.year-1, dt.month, dt.day+1)
+    days = (dt-(dt-1.year)).to_int
+    transactions = Transaction.where(company_id: company.id).where("date >= ?", date)
+    revenues = Array.new(days)
+    revenues.each_with_index {|rev, i| revenues[i] = 0}
+    expenses = revenues.clone
+    profits = revenues.clone
+    transactions.each do |transaction|
+      day = (transaction.date - date).to_i
+      revenues[day] += transaction.amount if transaction.category == "revenue"
+      expenses[day] += transaction.amount if transaction.category == "expense"
+      profits[day] += transaction.amount if transaction.category == "revenue"
+      profits[day] -= transaction.amount if transaction.category == "expense"
+    end
+    return {
+      revenues: revenues,
+      expenses: expenses,
+      profits: profits
+    }
+    transactions
+  end
+
 
   def strip_whitespace
     self.description = self.description.strip unless self.description.nil?
