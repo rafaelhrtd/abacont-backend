@@ -89,7 +89,7 @@ Rails.application.configure do
     :address        => 'london.mxroute.com',
     :port           => '465',
     :authentication => :plain,
-    :user_name      => 'noreply',
+    :user_name      => 'noreply@abacont.app',
     :password       => '8SEeL2JgYc!3Ibds',
     :domain         => 'abacont.app',
     :enable_starttls_auto => true
