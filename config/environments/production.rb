@@ -86,8 +86,8 @@ Rails.application.configure do
   host = 'intense-wave-32932.herokuapp.com'
   config.action_mailer.default_url_options = { host: host }
   ActionMailer::Base.smtp_settings = {
-    :address        => 'smtp.sendgrid.net',
-    :port           => '587',
+    :address        => 'london.mxroute.com',
+    :port           => '465',
     :authentication => :plain,
     :user_name      => 'noreply',
     :password       => '8SEeL2JgYc!3Ibds',
