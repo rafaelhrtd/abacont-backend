@@ -87,7 +87,7 @@ Rails.application.configure do
   config.action_mailer.default_url_options = { host: host }
   ActionMailer::Base.smtp_settings = {
     :address        => 'london.mxroute.com',
-    :port           => '465',
+    :port           => '587',
     :authentication => :plain,
     :user_name      => 'noreply@abacont.app',
     :password       => '8SEeL2JgYc!3Ibds',
