@@ -59,6 +59,22 @@ class Company < ApplicationRecord
     return UserInvite.create(params)
   end
 
+  # return employees
+  def employees
+    employees = []
+    self.users.where.not(id: self.owner.id).order(first_name: :ASC).each do |employee|
+      tag = employee.company_taggings.where(company: self).first
+      employee.can_read = tag.can_read
+      employee.can_edit = tag.can_edit
+      employee.can_invite = tag.can_invite
+      employee.role = tag.role
+      employee.can_write = tag.can_write
+      employee.company_id = self.id
+      employees.push employee
+    end
+    employees
+  end
+
   private 
   def strip_whitespace
     self.name = self.name.strip unless self.name.nil?

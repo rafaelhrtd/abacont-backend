@@ -4,7 +4,12 @@ class ApplicationController < ActionController::API
   respond_to :json
   rescue_from CanCan::AccessDenied, with: :access_denied
   rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
+  around_action :switch_locale
 
+  def switch_locale(&action)
+    locale = current_user.try(:language) || I18n.default_locale
+    I18n.with_locale(locale, &action)
+  end
 
   def current_ability
     @current_ability ||= Ability.new(current_user, params)
@@ -41,9 +46,10 @@ class ApplicationController < ActionController::API
 
   def record_not_found
     render json: {}, status: 404
-end
+  end
 
   def configure_permitted_parameters
     devise_parameter_sanitizer.permit(:sign_up, keys: [:first_name, :last_name, :token, :company_id, company_attributes: [:name]])
+    devise_parameter_sanitizer.permit(:account_update, keys: [:id, :email, :password, :password_confirmation, :current_password, :language])
   end
 end

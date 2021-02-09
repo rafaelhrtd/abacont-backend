@@ -11,16 +11,24 @@ es:
         user:
           attributes:
             first_name:
+              attribute_name: "nombre"
               blank: "Por favor, ingresa tu nombre."
-            last_name: 
+            current_password:
+              attribute_name: "contraseña actual"
+              blank: "Por favor, ingresa tu contraseña actual."
+            last_name:
+              attribute_name: "apellido"
               blank: "Por favor, ingresa tu apellido."
             email: 
+              attribute_name: "email"
               blank: "Por favor, ingresa tu e-mail."
               invalid: "Por favor, ingresa una dirección de correo electrónico válida."
-            password:
+            password: 
+              attribute_name: "contraseña"
               blank: "Por favor, ingresa una contraseña."
               too_short: "Por favor, ingresa una contraseña de por lo menos ocho caracteres."
             password_confirmation:
+              attribute_name: "confirmación de contraseña"
               confirmation: "Por favor, asegúrate de que la confirmación de la contraseña coincida con la original."
         company:
           attributes: 
@@ -54,7 +62,7 @@ es:
             value: 
               blank: "El valor del proyecto no puede estar en blanco."
               greater_than: "El valor del proyecto debe ser un número positivo."
-              not_a_number: "El valo del proyecto solo debe contener números y (opcionalmente) un punto decimal."
+              not_a_number: "El valor del proyecto solo debe contener números y (opcionalmente) un punto decimal."
             contact:
               :not_client: "El contacto de un proyecto debe ser un cliente."
             name: 

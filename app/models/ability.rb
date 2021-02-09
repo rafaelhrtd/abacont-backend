@@ -32,7 +32,7 @@ class Ability
         true
       end
 
-      can [:edit, :update], Company do |company|
+      can [:edit, :update, :employees], Company do |company|
         condition = (user.company == company && user.check_privilege(company: company, symbol: :can_edit))
         condition
       end
@@ -40,6 +40,11 @@ class Ability
       can [:send_invite, :invite_list, :destroy_invite, :resend_invite], Company do |company|
         condition = user.check_privilege(company: company, symbol: :can_invite)
         condition 
+      end
+
+      can [:update_permissions, :delete_employee], Company do |company|
+        company = Company.find(params[:company_tagging][:company_id])
+        company.owner == user
       end
 
       can [:get_invite, :claim_invite], Company do |company|

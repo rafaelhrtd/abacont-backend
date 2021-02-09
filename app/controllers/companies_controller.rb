@@ -19,6 +19,13 @@ class CompaniesController < ApplicationController
         end
     end
 
+    def employees
+        company = Company.find(current_user.company_id)
+        render json: {
+            employees: company.employees
+        }
+    end
+
     def switch_company 
         tagging = CompanyTagging.where(user: current_user).where(company_id: params[:id]).first
         if tagging != nil
@@ -89,6 +96,27 @@ class CompaniesController < ApplicationController
         end
     end
 
+    def update_permissions
+        employee = User.find(params[:company_tagging][:user_id])
+        company = Company.find(params[:company_tagging][:company_id])
+        tag = CompanyTagging.where(user: employee).where(company: company).first
+        tag.update(tag_params)
+        employee.switch_company(company: company)
+        render json: {
+            tagging: tag
+        }
+    end
+
+    def delete_employee
+        employee = User.find(params[:company_tagging][:user_id])
+        company = Company.find(params[:company_tagging][:company_id])
+        tag = CompanyTagging.where(user: employee).where(company: company).first
+        tag.destroy
+        render json: {
+            success: true
+        }
+    end
+
     private 
     def company_params
         params.require(:company).permit(:name)
@@ -101,6 +129,10 @@ class CompaniesController < ApplicationController
         print "\n\n #{params} \n\n"
         params.require(:invite).permit(:email, :can_read, \
             :can_write, :can_edit, :can_invite, :token, :company_id, :user_id)
+    end
+
+    def tag_params
+        params.require(:company_tagging).permit(:can_read, :can_write, :can_edit, :can_invite)
     end
 
 end

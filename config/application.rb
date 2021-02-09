@@ -26,13 +26,13 @@ module Accounting
       allow do
          origins '*'
          resource '*',
-           headers: [:any, 'Authorization'],
-           :methods => [:get, :post, :patch, :delete, :options],
+           headers: [:any, 'Authorization', 'HTTP_CONTENT_LANGUAGE'],
+           :methods => [:get, :post, :patch, :delete, :options, :put],
            expose: ['Authorization']
        end
     end
     config.i18n.load_path += Dir[Rails.root.join('config', 'locales', '*.{rb,yml}')]
-    config.i18n.default_locale = :es
+    config.i18n.default_locale = :en
 
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration can go into files in config/initializers

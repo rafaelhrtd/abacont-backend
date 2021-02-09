@@ -19,6 +19,9 @@ Rails.application.routes.draw do
   end
   
   get '/switch-company', to: 'companies#switch_company'
+  post '/delete-employee', to: 'companies#delete_employee'
+  get '/employees', to: 'companies#employees'
+  patch '/update-permissions', to: 'companies#update_permissions'
   get '/companies', to: 'companies#index'
   post '/send_invite', to: 'companies#send_invite'
   get '/invites', to: 'companies#invite_list'

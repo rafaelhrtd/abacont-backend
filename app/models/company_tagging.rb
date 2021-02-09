@@ -2,6 +2,22 @@ class CompanyTagging < ApplicationRecord
   belongs_to :user
   belongs_to :company
   validate :unique_for_user
+  before_destroy :create_backup_company
+
+  # if a user does not have his own company, create one
+  def create_backup_company
+    if self.user.companies.count - 1 <= 0
+      company = Company.create(name: "Default Company")
+      CompanyTagging.create(company: company,
+        can_write: true,
+        can_read: true,
+        can_edit: true,
+        can_invite: true,
+        role: "owner",
+        user: self.user)
+      self.user.switch_company(company: company)
+    end
+  end
 
   def self.create_from_invite(invite:, user:)
     tag = CompanyTagging.create({

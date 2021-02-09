@@ -1,33 +1,77 @@
-# Files in the config/locales directory are used for internationalization
-# and are automatically loaded by Rails. If you want to use locales other
-# than English, add the necessary files in this directory.
-#
-# To use the locales, use `I18n.t`:
-#
-#     I18n.t 'hello'
-#
-# In views, this is aliased to just `t`:
-#
-#     <%= t('hello') %>
-#
-# To use a different locale, set it with `I18n.locale`:
-#
-#     I18n.locale = :es
-#
-# This would use the information in config/locales/es.yml.
-#
-# The following keys must be escaped otherwise they will not be retrieved by
-# the default I18n backend:
-#
-# true, false, on, off, yes, no
-#
-# Instead, surround them with single quotes.
-#
-# en:
-#   'true': 'foo'
-#
-# To learn more, please read the Rails Internationalization guide
-# available at http://guides.rubyonrails.org/i18n.html.
-
+---
 en:
-  hello: "Hello world"
+  activerecord:
+    errors:
+      messages:
+        record_invalid: 'Validation failed: %{errors}'
+        restrict_dependent_destroy:
+          has_one: This record cannot be deleted because there exists a dependent %{record}.
+          has_many: This record cannot be deleted because there exist dependent %{record}.
+      models: 
+        user:
+          attributes:
+            first_name:
+              attribute_name: "name"
+              blank: "Please, enter your name."
+            current_password:
+              attribute_name: "current password"
+              blank: "Please, enter your current password"
+            last_name:
+              attribute_name: "last name"
+              blank: "Please, enter your last name."
+            email: 
+              attribute_name: "email"
+              blank: "Please, enter your e-mail."
+              invalid: "Please, enter a valid e-mail."
+            password: 
+              attribute_name: "password"
+              blank: "Please, enter a valid password."
+              too_short: "The minimum password length is 8 characters.."
+            password_confirmation:
+              attribute_name: "password confirmation"
+              confirmation: "Make sure the password and password confirmation match."
+        company:
+          attributes: 
+            name:
+              blank: "Please, enter your company's name."
+        contact:
+          attributes:
+            name:
+              blank: "The company's name is required."
+              taken: "A contact with the same name is already registered. Please add a unique identifier or delete the previous contact."
+        transaction:
+          attributes:
+            date:
+              blank: "Date required."
+            amount:
+              blank: "Amount required."
+              greater_than: "The amount must be a positive number."
+              excessive_payment: "The amount may not be greater than the remaining balance."
+              not_a_number: "The amount can only contain numbers and (optionally) a decimal point."
+            unacceptable_parent: "This transaction's parent must be an account payable or accout receivable."
+            unacceptable_category: "The category is not valid."
+            contact:
+              need_contact: "This transaction requires a contact (provider or client)."
+            no_parent_allowed: "This transaction type may not belong to another one."
+            contact_id:
+              non_existent_contact: "The requested contact does not exist in this company's database. Please select from the available options, or create a new one."
+            project_id:
+              non_existent_project: "The requested project does not exist in this company's database. Please select from the available options, or create a new one."
+        project: 
+          attributes:
+            value: 
+              blank: "The value of the project is required."
+              greater_than: "The value of the project must be a positive number."
+              not_a_number: "The project's value must only include numbers and (optionally) a decimal point."
+            contact:
+              :not_client: "The contact for a project must be a client."
+            name: 
+              blank: "The project's name is required."
+              taken: "A project with this name already exists in this company. To avoid any confusion, please add a unique identifier to the new project's name."
+            contact_id:
+              non_existent_contact: "The requested contact does not exist in this company's database. Please select from the available options, or create a new one."
+        user_invite: 
+          attributes: 
+            email:
+              already_in_company: "This user is already registered as an employee in the company."
+              already_invited: "This user has already been invited to this company. You may resend the email in your company's page."
