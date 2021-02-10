@@ -47,8 +47,8 @@ class Ability
         company.owner == user
       end
 
-      can [:get_invite, :claim_invite], Company do |company|
-        return true 
+      can [:get_invite, :claim_invite, :create], Company do |company|
+        true 
       end
       
       # Contact privileges
@@ -90,7 +90,7 @@ class Ability
 
     else 
       can [:get_invite, :claim_invite], Company do |company|
-        return true 
+        true 
       end
     end
   end

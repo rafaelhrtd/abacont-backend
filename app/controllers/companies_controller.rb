@@ -36,6 +36,15 @@ class CompaniesController < ApplicationController
         end
     end
 
+    def create
+        company = Company.create_new(name: params[:company][:name], user: current_user)
+        print "\n\nerrors: #{company.errors.count}\n\n"
+        render json: {
+            errors: company.errors.count == 0 ? {} : company.errors,
+            company: company.errors.count == 0 ? company : company.errors
+        }
+    end
+
     def send_invite 
         invite = UserInvite.create(invite_params)
         if invite.persisted?

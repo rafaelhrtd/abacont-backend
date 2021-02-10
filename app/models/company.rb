@@ -6,7 +6,6 @@ class Company < ApplicationRecord
   has_many :transactions
   has_many :user_invites
   validates :name, presence: true
-
   before_validation :strip_whitespace
   # add a user with a given role to an existing company
   def add_user(user, role: nil)
@@ -73,6 +72,23 @@ class Company < ApplicationRecord
       employees.push employee
     end
     employees
+  end
+
+  def self.create_new(user: nil, name: nil)
+    company = Company.new(name: name)
+
+    user.companies.each do |comp|
+      if (comp.name == company.name && comp != company)
+        company.errors.add(:name, :duplicate_name, message: "is already used by a company you belong to. Please add a unique identifier.")
+      end
+    end
+    print "\n#{company.errors.full_messages}\n"
+    if company.errors.empty? && company.save
+      tag = CompanyTagging.create(user: user, company: company, role: "owner", can_write: true, \
+        can_read: true, can_edit: true, can_invite: true)
+      user.switch_company(company: company)
+    end
+    return company
   end
 
   private 

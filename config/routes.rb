@@ -30,6 +30,7 @@ Rails.application.routes.draw do
   get '/resend_invite', to: 'companies#resend_invite'
   get '/get_invite', to: 'companies#get_invite'
   post '/claim_invite', to: 'companies#claim_invite'
+  post '/companies/create', to: 'companies#create'
   
 
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html

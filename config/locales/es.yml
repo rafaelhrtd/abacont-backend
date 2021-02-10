@@ -34,6 +34,7 @@ es:
           attributes: 
             name:
               blank: "Por favor, ingresa el nombre de tu compañía."
+              duplicate_name: "Este nombre está siendo usado por otra compañía a la que perteneces. Por favor, elige otro nombre."
         contact:
           attributes:
             name:

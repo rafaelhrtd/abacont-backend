@@ -2,6 +2,7 @@ class CompanyTagging < ApplicationRecord
   belongs_to :user
   belongs_to :company
   validate :unique_for_user
+  validates :company_id, presence: true
   before_destroy :create_backup_company
 
   # if a user does not have his own company, create one
