@@ -90,7 +90,7 @@ Rails.application.configure do
     :port           => '587',
     :authentication => :plain,
     :user_name      => 'noreply@abacont.app',
-    :password       => '8SEeL2JgYc!3Ibds',
+    :password       => ENV['ABACONT_EMAIL_PASSWORD'],
     :domain         => 'abacont.app',
     :enable_starttls_auto => true
   }
