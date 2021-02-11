@@ -1,4 +1,4 @@
-# Simple Accounting Softward
+# Simple Accounting Software
 Rails API for a simple accounting software.
 ## Main Features
 - Manage multiple companies.
